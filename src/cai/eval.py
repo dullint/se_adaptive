@@ -92,7 +92,7 @@ def load_eval_data() -> list[dict]:
         ]
 
 
-def evaluate(num_workers: int = 4):
+def evaluate():
     """Evaluate the critique+rewrite pipeline on the dev data.
 
     Args:
