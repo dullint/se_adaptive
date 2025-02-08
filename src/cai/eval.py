@@ -2,10 +2,10 @@ import re
 import json
 import os
 from cai.critique_rewrite import run_critique_rewrite_pipeline
-from cai.domain import CritiqueRewriteExample
+from cai.entities import CritiqueRewriteExample
 
 
-def assert_principle(answer: str) -> bool:
+def assert_principle(answer: str) -> tuple[bool, str]:
     """Check if the text follows the ADAPTIVE principle.
 
     The principle states that putting together the first letter of each meaningful
@@ -33,7 +33,7 @@ def assert_principle(answer: str) -> bool:
         ]
     )
 
-    return first_letters == seed
+    return first_letters == seed, first_letters
 
 
 def normalize_text(text: str) -> str:
@@ -116,7 +116,3 @@ def evaluate():
                 rewrite=rewrite,
             )
         )
-
-
-if __name__ == "__main__":
-    pass

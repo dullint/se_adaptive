@@ -1,5 +1,5 @@
-from cai.domain import CritiqueRewriteExample
-from cai.library_versions import load_example_library
+from cai.versioning import load_examples
+from cai.entities import CritiqueRewriteExample
 from cai.llm import run_model
 import json
 from pathlib import Path
@@ -48,13 +48,13 @@ Rewrite: {example.rewrite}
 """
 
 
-def get_few_shot_system_prompt() -> str:
-    few_shot_examples = load_example_library()
+def get_examples_system_prompt() -> str:
+    examples = load_examples()
     return f"""You are a helpful assistant that can critique and rewrite other assistant answers to comply with a given principle.
 Critique and rewrite are done in different steps, make sure to only critique or rewrite based on what is asked.
 
 Here are some examples of critique and rewrite:
-{"----".join([pretty_print_example(example) for example in few_shot_examples])}
+{"----".join([pretty_print_example(example) for example in examples])}
 """
 
 
@@ -62,7 +62,7 @@ def run_critique_rewrite_pipeline(
     human_prompt: str,
     assistant_answer: str,
 ) -> tuple[str, str]:
-    system_prompt = get_few_shot_system_prompt()
+    system_prompt = get_examples_system_prompt()
     # critique
     critique_prompt = get_critique_prompt(human_prompt, assistant_answer)
     critique = run_model(critique_prompt, system_prompt)
@@ -79,7 +79,7 @@ def add_to_examples(
     critique: str,
     rewrite: str,
 ) -> None:
-    """Add a new example to the development library file.
+    """Add a new example to the dev version file.
 
     Args:
         human_prompt: The human prompt text
@@ -94,23 +94,23 @@ def add_to_examples(
         "rewrite": rewrite,
     }
 
-    library_path = Path(__file__).parent / "libraries" / "lib_dev.jsonl"
-    with open(library_path, "a", encoding="utf-8") as f:
+    dev_path = Path(__file__).parent / "examples" / "ex_dev.jsonl"
+    with open(dev_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(example) + "\n")
 
 
-def delete_example(index: int) -> None:
-    """Delete an example from the development library.
+def delete_example(index: int, version: str) -> None:
+    """Delete an example from the development version.
 
     Args:
         index: Zero-based index of the example to delete
     """
-    library_path = Path(__file__).parent / "libraries" / "lib_dev.jsonl"
-    if not library_path.exists():
+    version_path = Path(__file__).parent / "libraries" / f"ex_{version}.jsonl"
+    if not version_path.exists():
         return
 
     # Read all examples
-    with open(library_path, "r", encoding="utf-8") as f:
+    with open(version_path, "r", encoding="utf-8") as f:
         examples = [json.loads(line) for line in f if line.strip()]
 
     # Remove the specified example
@@ -118,6 +118,6 @@ def delete_example(index: int) -> None:
         examples.pop(index)
 
         # Write back the remaining examples
-        with open(library_path, "w", encoding="utf-8") as f:
+        with open(version_path, "w", encoding="utf-8") as f:
             for example in examples:
                 f.write(json.dumps(example) + "\n")

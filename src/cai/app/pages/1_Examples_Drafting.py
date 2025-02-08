@@ -1,46 +1,12 @@
 import streamlit as st
+from cai.app.components.prompt_input import render_prompt_input
 from cai.critique_rewrite import run_critique_rewrite_pipeline, add_to_examples
-from cai.llm import run_model
+from cai.eval import assert_principle
 
 st.title("Examples Drafting")
 
 # Create two columns for inputs with a small gap
-col1, col2 = st.columns([1, 1], gap="medium")
-
-with col1:
-    st.subheader("👤 Human Prompt")
-    human_prompt = st.text_area(
-        "Enter your prompt:",
-        height=200,
-        placeholder="Type your prompt here...",
-        label_visibility="collapsed",
-    )
-
-with col2:
-    st.subheader("🤖 Model Answer")
-    model_answer = st.text_area(
-        "Model answer:",
-        value=st.session_state.model_answer,
-        height=200,
-        placeholder="Type or generate model answer...",
-        label_visibility="collapsed",
-        key="model_answer_input",
-    )
-
-    # Update session state when text area changes
-    st.session_state.model_answer = model_answer
-
-    # Generate button right under the model answer
-    if st.button("🤖 Generate Answer", use_container_width=True):
-        if human_prompt:
-            with st.spinner("Generating response..."):
-                st.session_state.model_answer = run_model(human_prompt)
-                st.rerun()
-        else:
-            st.error("Please enter a prompt first.")
-
-# Add some vertical spacing
-st.markdown("<br>", unsafe_allow_html=True)
+human_prompt, model_answer = render_prompt_input()
 
 
 # Wrap the button in a div for centering and sizing
@@ -75,12 +41,23 @@ if st.session_state.critique or st.session_state.rewrite:
 
     with res_col2:
         st.subheader("✏️ Rewritten Response")
+
+        # Evaluate adherence to principle
+        adherence, first_letters = assert_principle(st.session_state.rewrite)
+        bg_color = "#e8f4ea" if adherence else "#fde7e9"  # Green if adheres, red if not
+
         st.markdown(
-            f"""<div style="padding: 1rem; border-radius: 0.5rem; background-color: #f0f2f6">
+            f"""<div style="padding: 1rem; border-radius: 0.5rem; background-color: {bg_color}">
             {st.session_state.rewrite}
             </div>""",
             unsafe_allow_html=True,
         )
+
+        # Add adherence indicator
+        if adherence:
+            st.success("✅ Response adheres to principle")
+        else:
+            st.error(f"❌ Response does not adhere to principle: {first_letters}")
 
         # Add margin above the action buttons
         st.markdown('<div class="action-buttons">', unsafe_allow_html=True)
@@ -94,7 +71,7 @@ if st.session_state.critique or st.session_state.rewrite:
                 st.rerun()
 
         with col2:
-            if st.button("📚 Add to Example Library", use_container_width=True):
+            if st.button("📚 Add to Examples", use_container_width=True):
                 add_to_examples(
                     human_prompt,
                     model_answer,
@@ -103,6 +80,6 @@ if st.session_state.critique or st.session_state.rewrite:
                 )
                 # Set flag to scroll to bottom of Examples tab
                 st.session_state.scroll_to_new_example = True
-                # Switch to Examples Library page
-                st.switch_page("pages/2_Examples_Library.py")
+                # Switch to Examples Visualization page
+                st.switch_page("pages/2_Visualisation_&_Versioning.py")
         st.markdown("</div>", unsafe_allow_html=True)

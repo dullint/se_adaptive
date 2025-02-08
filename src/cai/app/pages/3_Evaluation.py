@@ -1,27 +1,25 @@
 import streamlit as st
-from cai.domain import CritiqueRewriteExample
+from cai.entities import CritiqueRewriteExample
 from cai.eval import load_eval_data, assert_principle, run_critique_rewrite_pipeline
-from cai.library_versions import list_library_versions, load_example_library
+from cai.versioning import list_examples_versions
+from cai.app.components.example_display import render_example
 
 st.title("Evaluation")
 
 # Add version selector to evaluation page
-st.sidebar.subheader("📚 Library Version")
-versions = list_library_versions()
+st.sidebar.subheader("📚 Examples Version")
+versions = list_examples_versions()
 version = st.sidebar.selectbox(
     "Select Version",
     versions,
     help="Select which version to use for few-shot examples",
 )
 
-# Use selected version for evaluation
-few_shot_examples = load_example_library(None if version == "Current" else version)
-
 # Load evaluation data
 eval_data = load_eval_data()
 
 st.subheader("Evaluation Results")
-st.markdown(f"Testing {len(eval_data)} examples from the dev set")
+st.markdown(f"Testing {len(eval_data)} examples from the eval set")
 
 # Add a button to run evaluation
 if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
@@ -31,65 +29,30 @@ if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
 
     # Process each example
     for idx, example in enumerate(eval_data):
-        st.markdown("---")
-
-        # Create columns for the example number and validation result
-        header_col1, header_col2 = st.columns([4, 1])
-        with header_col1:
-            st.subheader(f"Example {idx + 1}")
-
-        # Display human prompt
-        st.markdown("**Human Prompt:**")
-        st.markdown(f"```\n{example.human_prompt}\n```")
-
-        # Display original answer
-        st.markdown("**Original Answer:**")
-        st.markdown(f"```\n{example.assistant_answer}\n```")
-
         # Run critique and rewrite
         with st.spinner("Running critique and rewrite..."):
             critique, rewrite = run_critique_rewrite_pipeline(
-                example.human_prompt, example.assistant_answer
+                example["human_prompt"], example["assistant_answer"]
             )
             results.append(
                 CritiqueRewriteExample(
-                    human_prompt=example.human_prompt,
-                    assistant_answer=example.assistant_answer,
+                    human_prompt=example["human_prompt"],
+                    assistant_answer=example["assistant_answer"],
                     critique=critique,
                     rewrite=rewrite,
                 )
             )
 
-        # Display critique
-        st.markdown("**Critique:**")
-        st.markdown(
-            f"""<div style="padding: 1rem; border-radius: 0.5rem; background-color: #f0f2f6">
-            {critique}
-            </div>""",
-            unsafe_allow_html=True,
+        # Display example using component
+        render_example(
+            index=idx + 1,
+            human_prompt=example["human_prompt"],
+            assistant_answer=example["assistant_answer"],
+            critique=critique,
+            rewrite=rewrite,
+            show_adherence=True,
+            on_delete=None,  # No delete functionality in evaluation
         )
-
-        # Display rewrite and validation
-        st.markdown("**Rewritten Response:**")
-        follows_principle = assert_principle(rewrite)
-
-        # Use different colors based on validation result
-        bg_color = "#e7f5ea" if follows_principle else "#ffe6e6"
-        status_icon = "✅" if follows_principle else "❌"
-
-        st.markdown(
-            f"""<div style="padding: 1rem; border-radius: 0.5rem; background-color: {bg_color}">
-            {rewrite}
-            </div>""",
-            unsafe_allow_html=True,
-        )
-
-        # Display validation result
-        with header_col2:
-            st.markdown(
-                f"<h3 style='text-align: right'>{status_icon}</h3>",
-                unsafe_allow_html=True,
-            )
 
         # Update progress
         progress_bar.progress((idx + 1) / len(eval_data))
@@ -97,7 +60,7 @@ if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
     # Show final statistics
     st.markdown("---")
     st.subheader("📊 Evaluation Summary")
-    success_rate = sum(1 for ex in results if assert_principle(ex.rewrite)) / len(
+    success_rate = sum(1 for ex in results if assert_principle(ex.rewrite)[0]) / len(
         results
     )
     st.metric(

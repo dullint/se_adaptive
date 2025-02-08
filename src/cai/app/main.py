@@ -1,8 +1,8 @@
 import streamlit as st
-from cai.library_versions import init_dev_library
+from cai.versioning import init_dev_version
 
-# Initialize development library
-init_dev_library()
+# Initialize development version
+init_dev_version()
 
 
 st.set_page_config(
@@ -20,11 +20,13 @@ This tool helps create and test critique+rewrite examples for Constitutional AI.
 """)
 
 # Initialize session state
+if "human_prompt" not in st.session_state:
+    st.session_state.human_prompt = ""
 if "model_answer" not in st.session_state:
     st.session_state.model_answer = ""
 if "critique" not in st.session_state:
     st.session_state.critique = ""
 if "rewrite" not in st.session_state:
     st.session_state.rewrite = ""
-if "selected_library" not in st.session_state:
-    st.session_state.selected_library = "dev"
+if "selected_version" not in st.session_state:
+    st.session_state.selected_version = "dev"
