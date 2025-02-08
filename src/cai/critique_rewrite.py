@@ -73,6 +73,17 @@ def run_critique_rewrite_pipeline(
     return critique, rewrite
 
 
+def run_rewrite_pipeline(
+    human_prompt: str,
+    assistant_answer: str,
+    critique: str,
+) -> str:
+    system_prompt = get_examples_system_prompt()
+    rewrite_prompt = get_rewrite_prompt(human_prompt, assistant_answer, critique)
+    rewrite = run_model(rewrite_prompt, system_prompt)
+    return rewrite
+
+
 def add_to_examples(
     human_prompt: str,
     assistant_answer: str,
@@ -105,7 +116,7 @@ def delete_example(index: int, version: str) -> None:
     Args:
         index: Zero-based index of the example to delete
     """
-    version_path = Path(__file__).parent / "libraries" / f"ex_{version}.jsonl"
+    version_path = Path(__file__).parent / "examples" / f"ex_{version}.jsonl"
     if not version_path.exists():
         return
 

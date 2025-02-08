@@ -30,6 +30,7 @@ def render_example(
             "🗑️", key=f"delete_{index}", help="Delete this example"
         ):
             on_delete()
+            st.rerun()
 
     # Display human prompt
     st.markdown("**Human Prompt:**")
@@ -47,8 +48,6 @@ def render_example(
         </div>""",
         unsafe_allow_html=True,
     )
-    st.markdown("<br>", unsafe_allow_html=True)  # Add spacing
-
     # Display rewrite and validation
     st.markdown("**Rewritten Response:**")
 

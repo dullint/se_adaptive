@@ -34,7 +34,7 @@ with examples_container:
             critique=example.critique,
             rewrite=example.rewrite,
             show_adherence=False,
-            on_delete=lambda: delete_example(i - 1, version) and st.rerun(),
+            on_delete=lambda: delete_example(i - 1, version),
         )
 
 # Add empty space at the bottom to ensure the last example is fully visible
