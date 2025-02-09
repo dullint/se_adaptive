@@ -1,5 +1,5 @@
 from cai.versioning import load_examples
-from cai.entities import CritiqueRewriteExample
+from cai.models import CritiqueRewriteExample
 from cai.llm import run_model
 import json
 from pathlib import Path

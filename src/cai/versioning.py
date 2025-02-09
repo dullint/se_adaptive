@@ -1,6 +1,6 @@
 from pathlib import Path
 import json
-from cai.entities import CritiqueRewriteExample
+from cai.models import CritiqueRewriteExample
 
 
 def list_examples_versions():

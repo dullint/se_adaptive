@@ -1,22 +1,19 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class ConversationInput:
+class ConversationInput(BaseModel):
     human_prompt: str
     assistant_answer: str
 
 
-@dataclass
-class CritiqueRewriteExample:
+class CritiqueRewriteExample(BaseModel):
     human_prompt: str
     assistant_answer: str
     critique: str
     rewrite: str
 
 
-@dataclass
-class EvaluationResult:
+class EvaluationResult(BaseModel):
     human_prompt: str
     assistant_answer: str
     critique: str
@@ -25,8 +22,7 @@ class EvaluationResult:
     first_letters: str
 
 
-@dataclass
-class EvaluationReport:
+class EvaluationReport(BaseModel):
     version: str
     timestamp: str
     accuracy: float

@@ -1,11 +1,10 @@
-import dataclasses
 from datetime import datetime
 from pathlib import Path
 import re
 import json
 import os
 
-from cai.entities import ConversationInput, EvaluationReport, EvaluationResult
+from cai.models import ConversationInput, EvaluationReport, EvaluationResult
 
 
 def assert_principle(answer: str) -> tuple[bool, str]:
@@ -31,7 +30,7 @@ def assert_principle(answer: str) -> tuple[bool, str]:
     first_letters = "".join(
         [
             block.strip()[0].upper()
-            for block in re.split(r"[.:\n?!]+", normalized)
+            for block in re.split(r"[.\n?!]+", normalized)
             if block
         ]
     )
@@ -123,6 +122,6 @@ def save_eval_report(
 
     # Save to JSON file
     with filename.open("w", encoding="utf-8") as f:
-        json.dump(dataclasses.asdict(report), f, indent=2)
+        json.dump(report.model_dump(), f, indent=2)
 
     return filename

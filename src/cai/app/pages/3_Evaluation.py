@@ -1,12 +1,12 @@
 import streamlit as st
-from cai.entities import EvaluationResult
+from cai.models import EvaluationResult
 from cai.eval import (
     load_eval_data,
     assert_principle,
     save_eval_report,
 )
 from cai.critique_rewrite import run_critique_rewrite_pipeline
-from cai.versioning import list_examples_versions
+from cai.versioning import save_dev_version, list_examples_versions
 from cai.app.components.example_display import render_example
 
 
@@ -29,6 +29,11 @@ st.markdown(f"Testing {len(eval_data)} examples from the eval set")
 
 # Add a button to run evaluation
 if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
+    # First save current dev as new version
+    if version == "dev":
+        version = save_dev_version()
+        st.info(f"✨ Created new version: {version}")
+
     # Show progress bar
     progress_bar = st.progress(0)
     results: list[EvaluationResult] = []
