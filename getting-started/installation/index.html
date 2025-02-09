@@ -801,25 +801,32 @@
 <p>To install the dependencies for testing and documentation too, run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>test,docs<span class="o">]</span>
 </code></pre></div>
+<p>If environment issues arise, we recommend to install <code>poetry</code> and use it to install the dependencies.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>poetry
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>poetry<span class="w"> </span>install
+</code></pre></div>
 <h3 id="2-environment-setup">2. Environment Setup</h3>
 <p>CAI requires an OpenAI API key to function. Two options are available:</p>
 <ul>
 <li>Export the API key as an environment variable:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>&lt;your_openai_api_key&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>&lt;your_openai_api_key&gt;
 </code></pre></div>
 <ul>
 <li>Create a <code>.env</code> file in your project root directory and add your API key:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
 </code></pre></div>
-<div class="highlight"><span class="filename">.env</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="na">OPENAI_API_KEY</span><span class="o">=</span><span class="s">&lt;your_openai_api_key&gt;</span>
+<div class="highlight"><span class="filename">.env</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="na">OPENAI_API_KEY</span><span class="o">=</span><span class="s">&lt;your_openai_api_key&gt;</span>
 </code></pre></div>
 <p>!!! warning "API Key Security"
   Never commit your <code>.env</code> file to version control.</p>
 <h2 id="running-the-app">Running the App</h2>
 <p>To run the app, use the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cai-app
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cai-app
+</code></pre></div>
+<p>or with poetry:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>cai-app
 </code></pre></div>
 <p>This will start the app in your default browser.</p>
 
