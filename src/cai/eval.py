@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import json
 import os
+from typing import Literal
 
 from cai.models import ConversationInput, EvaluationReport, EvaluationResult
 
@@ -82,9 +83,9 @@ def normalize_text(text: str) -> str:
     return normalized
 
 
-def load_eval_data() -> list[ConversationInput]:
+def load_eval_data(set_: Literal["test", "validation"]) -> list[ConversationInput]:
     with open(
-        f"{os.path.dirname(os.path.abspath(__file__))}/data/dev.jsonl",
+        f"{os.path.dirname(os.path.abspath(__file__))}/data/{set_}.jsonl",
         "r",
         encoding="utf-8",
     ) as f:

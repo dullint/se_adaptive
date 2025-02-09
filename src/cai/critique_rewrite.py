@@ -1,8 +1,6 @@
 from cai.versioning import load_examples
 from cai.models import CritiqueRewriteExample
 from cai.llm import run_model
-import json
-from pathlib import Path
 
 PRINCIPLE = "putting together the first letter of each sentence from the answer should spell 'ADAPTIVE'."
 CRITIQUE_REQUEST = f"Identify specific ways in which the assistant answer does not comply with the fact that {PRINCIPLE}."
@@ -35,24 +33,6 @@ Critique: {critique_response}
 
 RewriteRequest: {REWRITE_REQUEST}
 Rewrite:
-"""
-
-
-def refine_critique_prompt(
-    human_prompt: str,
-    model_answer: str,
-    current_critique: str,
-    refinement_instructions: str,
-) -> str:
-    return f"""You are a helpful assistant that can refine a critique of an assistant answer.
-
-Human prompt: {human_prompt}
-Answer: {model_answer}
-Current critique: {current_critique}
-
-Refinement instructions: {refinement_instructions}
-Please provide a refined version of the critique that incorporates these refinement instructions.
-Critique:
 """
 
 
@@ -104,56 +84,6 @@ def run_rewrite_pipeline(
     return rewrite
 
 
-def add_to_dev_examples(
-    human_prompt: str,
-    assistant_answer: str,
-    critique: str,
-    rewrite: str,
-) -> None:
-    """Add a new example to the dev version file.
-
-    Args:
-        human_prompt: The human prompt text
-        assistant_answer: The model's answer
-        critique: The critique of the answer
-        rewrite: The rewritten answer
-    """
-    example = {
-        "human_prompt": human_prompt,
-        "assistant_answer": assistant_answer,
-        "critique": critique,
-        "rewrite": rewrite,
-    }
-
-    dev_path = Path(__file__).parent / "examples" / "ex_dev.jsonl"
-    with open(dev_path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(example) + "\n")
-
-
-def delete_example(index: int, version: str) -> None:
-    """Delete an example from the development version.
-
-    Args:
-        index: Zero-based index of the example to delete
-    """
-    version_path = Path(__file__).parent / "examples" / f"ex_{version}.jsonl"
-    if not version_path.exists():
-        return
-
-    # Read all examples
-    with open(version_path, "r", encoding="utf-8") as f:
-        examples = [json.loads(line) for line in f if line.strip()]
-
-    # Remove the specified example
-    if 0 <= index < len(examples):
-        examples.pop(index)
-
-        # Write back the remaining examples
-        with open(version_path, "w", encoding="utf-8") as f:
-            for example in examples:
-                f.write(json.dumps(example) + "\n")
-
-
 def run_critique_refinement(
     human_prompt: str,
     model_answer: str,
@@ -171,7 +101,14 @@ def run_critique_refinement(
     Returns:
         str: The refined critique
     """
-    prompt = refine_critique_prompt(
-        human_prompt, model_answer, current_critique, refinement_instructions
-    )
+    prompt = f"""You are a helpful assistant that can refine a critique of an assistant answer.
+
+Human prompt: {human_prompt}
+Answer: {model_answer}
+Current critique: {current_critique}
+
+Refinement instructions: {refinement_instructions}
+Please provide a refined version of the critique that incorporates these refinement instructions.
+Critique:
+"""
     return run_model(prompt)

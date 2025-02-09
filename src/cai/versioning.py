@@ -77,3 +77,53 @@ def reload_dev_from_version(version: str) -> None:
 
     if version_path.exists():
         dev_path.write_bytes(version_path.read_bytes())
+
+
+def add_to_dev_examples(
+    human_prompt: str,
+    assistant_answer: str,
+    critique: str,
+    rewrite: str,
+) -> None:
+    """Add a new example to the dev version file.
+
+    Args:
+        human_prompt: The human prompt text
+        assistant_answer: The model's answer
+        critique: The critique of the answer
+        rewrite: The rewritten answer
+    """
+    example = {
+        "human_prompt": human_prompt,
+        "assistant_answer": assistant_answer,
+        "critique": critique,
+        "rewrite": rewrite,
+    }
+
+    dev_path = Path(__file__).parent / "examples" / "ex_dev.jsonl"
+    with open(dev_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(example) + "\n")
+
+
+def delete_example(index: int, version: str) -> None:
+    """Delete an example from the development version.
+
+    Args:
+        index: Zero-based index of the example to delete
+    """
+    version_path = Path(__file__).parent / "examples" / f"ex_{version}.jsonl"
+    if not version_path.exists():
+        return
+
+    # Read all examples
+    with open(version_path, "r", encoding="utf-8") as f:
+        examples = [json.loads(line) for line in f if line.strip()]
+
+    # Remove the specified example
+    if 0 <= index < len(examples):
+        examples.pop(index)
+
+        # Write back the remaining examples
+        with open(version_path, "w", encoding="utf-8") as f:
+            for example in examples:
+                f.write(json.dumps(example) + "\n")

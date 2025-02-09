@@ -1,7 +1,6 @@
 import streamlit as st
 from cai.app.components.version_controls import render_version_controls
-from cai.critique_rewrite import delete_example
-from cai.versioning import load_examples
+from cai.versioning import delete_example, load_examples
 from cai.app.components.example_display import render_example
 
 st.title("Examples Visualization")

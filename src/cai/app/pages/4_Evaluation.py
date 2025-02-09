@@ -22,10 +22,10 @@ version = st.sidebar.selectbox(
 )
 
 # Load evaluation data
-eval_data = load_eval_data()
+eval_data = load_eval_data("test")
 
 st.subheader("Evaluation Results")
-st.markdown(f"Testing {len(eval_data)} examples from the eval set")
+st.markdown(f"Testing {len(eval_data)} examples from the test set")
 
 # Add a button to run evaluation
 if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
