@@ -37,7 +37,7 @@ Here are {len(failures)} failed examples:
 
 Please analyze briefly these failures by providing:
 1. Common patterns in the failures
-2. Concrete suggestions for generating better examples that would help the model learn
+2. Concrete suggestions for generating better prompting examples that would help the model learn
 3. What types of examples would be most helpful to add
 
 Analysis:

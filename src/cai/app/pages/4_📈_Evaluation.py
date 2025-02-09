@@ -10,7 +10,7 @@ from cai.versioning import save_dev_version, list_examples_versions
 from cai.app.components.example_display import render_example
 
 
-st.title("Evaluation")
+st.title("📈 Evaluation")
 
 # Add version selector to evaluation page
 st.sidebar.subheader("📚 Examples Version")

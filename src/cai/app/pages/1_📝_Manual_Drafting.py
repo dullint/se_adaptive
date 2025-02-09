@@ -9,7 +9,7 @@ from cai.versioning import add_to_dev_examples
 from cai.eval import assert_principle
 from cai.app.components.example_display import render_example
 
-st.title("Examples Drafting")
+st.title("📝 Manual Drafting")
 
 
 def on_text_change(new_value, key):

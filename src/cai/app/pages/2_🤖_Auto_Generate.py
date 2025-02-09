@@ -4,11 +4,11 @@ from cai.auto_generate import analyze_failures, generate_improvement_examples
 from cai.critique_rewrite import run_critique_rewrite_pipeline
 from cai.eval import assert_principle, load_eval_data
 from cai.models import EvaluationResult
-from cai.versioning import add_to_dev_examples, load_examples
+from cai.versioning import add_to_dev_examples
 
-st.title("Auto-Generate Improvements")
+st.title("🤖 Auto-Generate")
 
-eval_data = load_eval_data("validation")[:3]
+eval_data = load_eval_data("validation")
 st.markdown(f"Testing {len(eval_data)} examples from the validation set")
 
 if st.button("🤖 Auto-Generate Examples", type="primary", use_container_width=True):
@@ -61,10 +61,7 @@ if st.button("🤖 Auto-Generate Examples", type="primary", use_container_width=
 
         # Show generated examples
         st.subheader("✨ Generated Examples")
-        current_examples = load_examples("dev")
-        new_examples = generate_improvement_examples(
-            current_examples, results, analysis
-        )
+        new_examples = generate_improvement_examples(results, analysis)
         for i, example in enumerate(new_examples, 1):
             render_example(
                 index=i,

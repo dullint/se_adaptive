@@ -3,7 +3,7 @@ from cai.app.components.version_controls import render_version_controls
 from cai.versioning import delete_example, load_examples
 from cai.app.components.example_display import render_example
 
-st.title("Examples Visualization")
+st.title("📊 Visualization & Versioning")
 
 version = render_version_controls()
 
