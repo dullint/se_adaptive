@@ -22,14 +22,15 @@ This will:
 !!! warning "API Key Required"
     Ensure you've configured your OpenAI API key in the `.env` file as described in the [installation guide](installation.md)
 
-
-
-
 ## Basic Usage
 
 When using the app for the first time, you can have a look at the Manual Drafting page to get familiar with the interface.
 
 ![Initial input](../assets/manual.png)
+
+!!! Tip
+    The app has a version system. The current prompt version is called the `dev` version. It is the version you are currently working on.
+    More information about the version system can be found in the [versioning guide](../features/visualization-versioning.md).
 
 ### 1. Creating an Example
 
@@ -48,7 +49,7 @@ The interface automatically validates if responses follow the ADAPTIVE principle
 
 When satisfied with an example:
 
-1. Click "📚 Add to Examples" to save it
+1. Click "📚 Add to Examples" to save it (it will be saved in the `dev` version)
 2. View your saved examples in the Visualization page
 
 ## Next Steps

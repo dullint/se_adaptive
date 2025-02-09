@@ -28,7 +28,11 @@ This will install CAI in the current directory and make it editable.
 pip install -e .
 ```
 
-This will install all dependencies
+To install the dependencies for testing and documentation too, run:
+
+```bash
+pip install -e .[test,docs]
+```
 
 ### 2. Environment Setup
 
@@ -36,22 +40,22 @@ CAI requires an OpenAI API key to function. Two options are available:
 
 - Export the API key as an environment variable:
 
-    ```bash
-    export OPENAI_API_KEY=<your_openai_api_key>
-    ```
+  ```bash
+  export OPENAI_API_KEY=<your_openai_api_key>
+  ```
 
 - Create a `.env` file in your project root directory and add your API key:
 
-    ```bash
-    cp .env.example .env
-    ```
+  ```bash
+  cp .env.example .env
+  ```
 
-    ```ini title=".env"
-    OPENAI_API_KEY=<your_openai_api_key>
-    ```
+  ```ini title=".env"
+  OPENAI_API_KEY=<your_openai_api_key>
+  ```
 
-    !!! warning "API Key Security"
-        Never commit your `.env` file to version control.
+  !!! warning "API Key Security"
+  Never commit your `.env` file to version control.
 
 ## Running the App
 
