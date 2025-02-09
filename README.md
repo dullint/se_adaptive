@@ -1,6 +1,6 @@
 # Constitutional AI Take-Home Report
 
-## Run the app
+## Deliverables
 
 The deliverables of this take-home are:
 
@@ -8,6 +8,10 @@ The deliverables of this take-home are:
 - This repository containing the app code
 - The tool documentation deployed and available at [CAI Documentation](https://dullint.github.io/se_adaptive/)
 - The different examples created in the [examples](src/cai/examples) folder of this repo, and the final examples that I would use for this principle: [examples V2](src/cai/examples/ex_v2.jsonl).
+
+## Run the app
+
+Guide to launch the app is available in the [CAI Documentation](https://dullint.github.io/se_adaptive/getting-started/installation/).
 
 ## Constitutional Examples Created
 
@@ -84,7 +88,7 @@ REWRITE_REQUEST = (
 )
 ```
 
-#### Features prompting
+#### Critique+Rewrite prompts
 
 The prompting in the critique+rewrite pipeline has been voluntarily kept simple to be in line with then paper description. Prompts can be found in the [critique_rewrite.py](src/cai/critique_rewrite.py) file:
 
