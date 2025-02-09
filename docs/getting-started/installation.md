@@ -34,6 +34,13 @@ To install the dependencies for testing and documentation too, run:
 pip install -e .[test,docs]
 ```
 
+If environment issues arise, we recommend to install `poetry` and use it to install the dependencies.
+
+```bash
+pip install poetry
+poetry install
+```
+
 ### 2. Environment Setup
 
 CAI requires an OpenAI API key to function. Two options are available:
@@ -63,6 +70,12 @@ To run the app, use the following command:
 
 ```bash
 cai-app
+```
+
+or with poetry:
+
+```bash
+poetry run cai-app
 ```
 
 This will start the app in your default browser.
