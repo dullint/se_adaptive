@@ -868,8 +868,8 @@
 <p>At the top of the visualization page, you'll find version controls:</p>
 <h3 id="version-types">Version Types</h3>
 <ul>
-<li><strong>dev</strong>: Development version for active work</li>
-<li><strong>v1, v2, etc.</strong>: past versions or snapshots</li>
+<li><code>dev</code>: Development version for active work</li>
+<li><code>v1</code>, <code>v2</code>: past versions or snapshots</li>
 </ul>
 <h3 id="actions-on-dev-version">Actions on dev version</h3>
 <p>The dev version is the version that is currently being worked on.</p>
@@ -879,10 +879,12 @@
 </li>
 <li>
 <p>If an older saved version is selected, you can see a "Reload to dev" button. that will reload the dev version with the examples of the selected version.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful, this action will overwrite the current dev version with the examples of the selected version.</p>
+</div>
 </li>
 </ul>
-<p>!!! Warning
-      Be careful, this action will overwrite the current dev version with the examples of the selected version.</p>
 <p><img alt="save-version" src="../../assets/selector.png" /></p>
 <h2 id="example-visualization">Example Visualization</h2>
 <p>Each example in the selected version is displayed with:</p>
