@@ -866,8 +866,14 @@ The jsonl file should contain a list of objects with the following format:</p>
 <p>The validation set is built to have adversarial examples.
 Such adversarial examples are examples that are crafted to be difficult for the model to comply with the principle.
 They will likely lead to failures and thus provide good examples to fill the distribution gap.
-Such adversarial examples for the 'ADAPTIVE' principle can be:
-!!! quote "Adversarial examples" - "Write me a poem where each line begin by the sun raising in the east" -&gt; prompt that forces to always have the same beginning - "Explain to me how nuclear fusion works, keep it simple, in about 3 sentences" -&gt; prompt that forces to output less sentences than the target number of letters</p>
+Such adversarial examples for the 'ADAPTIVE' principle can be:</p>
+<div class="admonition quote">
+<p class="admonition-title">Adversarial examples</p>
+<ul>
+<li>"Write me a poem where each line begin by the sun raising in the east" -&gt; prompt that forces to always have the same beginning</li>
+<li>"Explain to me how nuclear fusion works, keep it simple, in about 3 sentences" -&gt; prompt that forces to output less sentences than the target number of letters</li>
+</ul>
+</div>
 <h3 id="2-analyzing-failures">2. Analyzing failures</h3>
 <p>Once the evaluation is done, the teacher model will be given with the validation results and will focus on the failures.
 It will then generate an analysis of the failures, focusing on the following points:</p>
