@@ -27,14 +27,6 @@ The current implementation focuses on the following principle:
 - **Quality Control**: Automatic validation of the ADAPTIVE principle adherence
 - **Iterative Improvement**: Tools for continuous refinement of your examples collection
 
-## Quick Links
-
-- [Installation Guide](getting-started/installation.md)
-- [Manual Drafting Guide](features/manual-drafting.md)
-- [Auto Generate Documentation](features/auto-generate.md)
-- [Visualization & Versioning](features/visualization-versioning.md)
-- [Evaluation Guide](features/evaluation.md)
-
 ## Getting Started
 
 To get started with CAI:

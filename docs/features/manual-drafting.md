@@ -63,4 +63,4 @@ Every previous iteration is kept visible on the page.
 ### 5. Adding examples to your library
 
 Once you are happy with the example, you can add it to your few-shot examples library by clicking on the "📚 Add to Examples" button.
-Note that the tool has a versioning system (More info [here](features/visualization-versioning.md)). The current version is called the `dev`version and new examples are always added to this version.
+Note that the tool has a versioning system (More info [here](../features/visualization-versioning.md)). The current version is called the `dev`version and new examples are always added to this version.

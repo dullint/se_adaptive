@@ -1,5 +1,6 @@
 import streamlit as st
 from cai.app.components.prompt_input import render_prompt_input
+from cai.app.main import init_session_state
 from cai.critique_rewrite import (
     run_critique_rewrite_pipeline,
     run_rewrite_pipeline,
@@ -10,6 +11,8 @@ from cai.eval import assert_principle
 from cai.app.components.example_display import render_example
 
 st.title("📝 Manual Drafting")
+
+init_session_state()
 
 
 def on_text_change(new_value, key):
@@ -154,7 +157,7 @@ if st.session_state.get("critique") or st.session_state.get("rewrite"):
                 st.session_state.rewrite,
             )
             st.session_state.scroll_to_new_example = True
-            st.switch_page("pages/3_Visualisation_&_Versioning.py")
+            st.switch_page("pages/3_📊_Visualisation_&_Versioning.py")
     st.markdown("</div>", unsafe_allow_html=True)
 
 # Always show reset button at bottom of page

@@ -33,7 +33,12 @@ The validation set is built to have adversarial examples.
 Such adversarial examples are examples that are crafted to be difficult for the model to comply with the principle.
 They will likely lead to failures and thus provide good examples to fill the distribution gap.
 Such adversarial examples for the 'ADAPTIVE' principle can be:
-!!! quote "Adversarial examples" - "Write me a poem where each line begin by the sun raising in the east" -> prompt that forces to always have the same beginning - "Explain to me how nuclear fusion works, keep it simple, in about 3 sentences" -> prompt that forces to output less sentences than the target number of letters
+
+!!! quote "Adversarial examples" 
+    
+      - "Write me a poem where each line begin by the sun raising in the east" -> prompt that forces to always have the same beginning
+      - "Explain to me how nuclear fusion works, keep it simple, in about 3 sentences" -> prompt that forces to output less sentences than the target number of letters
+
 
 ### 2. Analyzing failures
 

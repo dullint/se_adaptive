@@ -46,3 +46,4 @@ nav:
       - 🤖 Auto Generate: features/auto-generate.md
       - 📊 Visualization & Versioning: features/visualization-versioning.md
       - 📈 Evaluation: features/evaluation.md
+      - 📥 Import/Export Examples: features/export-import-examples.md

@@ -59,6 +59,8 @@ def normalize_text(text: str) -> str:
         (r"`([^`]+)`", r"\1"),  # Inline code
         (r"^#+\s+", ""),  # Headers
         (r"\n{3,}", "\n\n"),  # Multiple newlines
+        (r'"([^"]+)"', r"\1"),  # Remove double quotes
+        (r"'([^']+)'", r"\1"),  # Remove single quotes
     ]
 
     # Apply each pattern
