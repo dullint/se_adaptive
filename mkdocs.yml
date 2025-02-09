@@ -41,7 +41,7 @@ nav:
   - Getting Started:
       - Installation: getting-started/installation.md
       - Quickstart: getting-started/quickstart.md
-  - Features:
+  - Main Features:
       - 📝 Manual Drafting: features/manual-drafting.md
       - 🤖 Auto Generate: features/auto-generate.md
       - 📊 Visualization & Versioning: features/visualization-versioning.md

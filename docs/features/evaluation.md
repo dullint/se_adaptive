@@ -19,6 +19,7 @@ The evaluation process:
 2. Click "🚀 Run Evaluation" to begin
 3. Monitor progress in real-time
 
+![run-evaluation](../assets/eval.png)
 ### Test Dataset
 
 The evaluation uses a dedicated test set stored in `data/test.jsonl`. This set:

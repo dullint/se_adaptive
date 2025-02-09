@@ -44,15 +44,17 @@ It will then generate an analysis of the failures, focusing on the following poi
 - Concrete suggestions for generating better examples that would help the model learn
 - What types of examples would be most helpful to add
 
+![analysis](../assets/auto_analysis.png)
+
 ### 3. Generating new examples
 
-The teacher model will then be given the analysis to generate new human prompts that are similar to the ones in the failures.
+The teacher model will then be given the analysis to generate 3 new human prompts that are similar to the ones in the failures.
 A model answer is then naturally generated for each new human prompt.
 
 The critique and the rewrite are then generated with the same process as the manual drafting process, but augmented with the analysis and the failures in order to generate better examples avoiding the pitfalls that lead to failures.
 
 !!! Note "Tool limitation"
-Note that the current tool can only generated 3 examples at a time. further development could allow to have a slider allowing to select the number of examples to generate.
+    Note that the current tool can only generated 3 examples at a time. further development could allow to have a slider allowing to select the number of examples to generate.
 
 ### 4. Adding new examples to the library
 

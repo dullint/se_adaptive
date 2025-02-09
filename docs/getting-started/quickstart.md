@@ -22,17 +22,14 @@ This will:
 !!! warning "API Key Required"
     Ensure you've configured your OpenAI API key in the `.env` file as described in the [installation guide](installation.md)
 
-## Interface Overview
 
-The main interface shows:
 
-- The current principle: **First letter of each sentence should spell "ADAPTIVE"**
-- A drafting area for creating examples
-- Navigation sidebar for different features
 
 ## Basic Usage
 
 When using the app for the first time, you can have a look at the Manual Drafting page to get familiar with the interface.
+
+![Initial input](../assets/manual.png)
 
 ### 1. Creating an Example
 

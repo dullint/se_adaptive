@@ -32,7 +32,7 @@ The current implementation focuses on the following principle:
 - [Installation Guide](getting-started/installation.md)
 - [Manual Drafting Guide](features/manual-drafting.md)
 - [Auto Generate Documentation](features/auto-generate.md)
-- [Visualization & Versioning](features/visualization.md)
+- [Visualization & Versioning](features/visualization-versioning.md)
 - [Evaluation Guide](features/evaluation.md)
 
 ## Getting Started

@@ -2,6 +2,8 @@
 
 The visualization and versioning interface allows you to manage, view, and analyze your examples across different versions. This page explains how to effectively use these features.
 
+![selector](../assets/visualization.png)
+
 ## Version Management
 
 ### Selecting Versions
@@ -22,7 +24,9 @@ The dev version is the version that is currently being worked on.
 - If an older saved version is selected, you can see a "Reload to dev" button. that will reload the dev version with the examples of the selected version.
 
   !!! Warning
-  Be careful, this action will overwrite the current dev version with the examples of the selected version.
+      Be careful, this action will overwrite the current dev version with the examples of the selected version.
+
+![save-version](../assets/selector.png)
 
 ## Example Visualization
 
