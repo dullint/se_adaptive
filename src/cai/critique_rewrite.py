@@ -38,6 +38,24 @@ Rewrite:
 """
 
 
+def refine_critique_prompt(
+    human_prompt: str,
+    model_answer: str,
+    current_critique: str,
+    refinement_instructions: str,
+) -> str:
+    return f"""You are a helpful assistant that can refine a critique of an assistant answer.
+
+Human prompt: {human_prompt}
+Answer: {model_answer}
+Current critique: {current_critique}
+
+Refinement instructions: {refinement_instructions}
+Please provide a refined version of the critique that incorporates these refinement instructions.
+Critique:
+"""
+
+
 def pretty_print_example(example: CritiqueRewriteExample) -> str:
     return f"""Human: {example.human_prompt}
 Assistant: {example.assistant_answer}
@@ -48,8 +66,8 @@ Rewrite: {example.rewrite}
 """
 
 
-def get_examples_system_prompt() -> str:
-    examples = load_examples()
+def get_examples_system_prompt(version: str) -> str:
+    examples = load_examples(version)
     return f"""You are a helpful assistant that can critique and rewrite other assistant answers to comply with a given principle.
 Critique and rewrite are done in different steps, make sure to only critique or rewrite based on what is asked.
 
@@ -61,8 +79,9 @@ Here are some examples of critique and rewrite:
 def run_critique_rewrite_pipeline(
     human_prompt: str,
     assistant_answer: str,
+    version: str,
 ) -> tuple[str, str]:
-    system_prompt = get_examples_system_prompt()
+    system_prompt = get_examples_system_prompt(version)
     # critique
     critique_prompt = get_critique_prompt(human_prompt, assistant_answer)
     critique = run_model(critique_prompt, system_prompt)
@@ -77,14 +96,15 @@ def run_rewrite_pipeline(
     human_prompt: str,
     assistant_answer: str,
     critique: str,
+    version: str,
 ) -> str:
-    system_prompt = get_examples_system_prompt()
+    system_prompt = get_examples_system_prompt(version)
     rewrite_prompt = get_rewrite_prompt(human_prompt, assistant_answer, critique)
     rewrite = run_model(rewrite_prompt, system_prompt)
     return rewrite
 
 
-def add_to_examples(
+def add_to_dev_examples(
     human_prompt: str,
     assistant_answer: str,
     critique: str,
@@ -132,3 +152,26 @@ def delete_example(index: int, version: str) -> None:
         with open(version_path, "w", encoding="utf-8") as f:
             for example in examples:
                 f.write(json.dumps(example) + "\n")
+
+
+def run_critique_refinement(
+    human_prompt: str,
+    model_answer: str,
+    current_critique: str,
+    refinement_instructions: str,
+) -> str:
+    """Refines an existing critique based on given instructions.
+
+    Args:
+        human_prompt: The original human prompt
+        model_answer: The original model answer
+        current_critique: The current critique to refine
+        refinement_instructions: Instructions for how to refine the critique
+
+    Returns:
+        str: The refined critique
+    """
+    prompt = refine_critique_prompt(
+        human_prompt, model_answer, current_critique, refinement_instructions
+    )
+    return run_model(prompt)

@@ -55,6 +55,12 @@ def render_example(
     if show_adherence:
         adherence, first_letters = assert_principle(rewrite)
         bg_color = "#e8f4ea" if adherence else "#fde7e9"  # Green if adheres, red if not
+        if adherence:
+            rewrite += "<br><br>✅ Response adheres to principle"
+        else:
+            rewrite += (
+                f"<br><br>❌ Response does not adhere to principle: {first_letters}"
+            )
 
     st.markdown(
         f"""<div style="padding: 1rem; border-radius: 0.5rem; background-color: {bg_color}">
@@ -62,13 +68,6 @@ def render_example(
         </div>""",
         unsafe_allow_html=True,
     )
-
-    # Show adherence status only if enabled
-    if show_adherence:
-        if adherence:
-            st.success("✅ Response adheres to principle")
-        else:
-            st.error(f"❌ Response does not adhere to principle: {first_letters}")
 
     # Add spacing between examples
     st.markdown("<hr>", unsafe_allow_html=True)

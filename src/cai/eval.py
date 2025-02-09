@@ -1,8 +1,11 @@
+import dataclasses
+from datetime import datetime
+from pathlib import Path
 import re
 import json
 import os
-from cai.critique_rewrite import run_critique_rewrite_pipeline
-from cai.entities import CritiqueRewriteExample
+
+from cai.entities import ConversationInput, EvaluationReport, EvaluationResult
 
 
 def assert_principle(answer: str) -> tuple[bool, str]:
@@ -69,7 +72,7 @@ def normalize_text(text: str) -> str:
     for line in lines:
         line = line.strip()
         if line:
-            if line[-1] not in ".!?:":
+            if line[-1] not in ".!?":
                 line += "."
             normalized_lines.append(line)
 
@@ -80,39 +83,46 @@ def normalize_text(text: str) -> str:
     return normalized
 
 
-def load_eval_data() -> list[dict]:
+def load_eval_data() -> list[ConversationInput]:
     with open(
         f"{os.path.dirname(os.path.abspath(__file__))}/data/dev.jsonl",
         "r",
         encoding="utf-8",
     ) as f:
         return [
-            {"human_prompt": d["user"], "assistant_answer": d["bot"]}
+            ConversationInput(human_prompt=d["user"], assistant_answer=d["bot"])
             for d in map(json.loads, f)
         ]
 
 
-def evaluate():
-    """Evaluate the critique+rewrite pipeline on the dev data.
+def save_eval_report(
+    results: list[EvaluationResult], version: str, success_rate: float
+):
+    """Saves evaluation results to a JSON file.
 
     Args:
-        num_workers: The number of workers to use for the evaluation.
-
-    Returns:
-        A list of CritiqueRewriteExample objects.
+        results: List of evaluation results
+        version: Examples version used for evaluation
+        success_rate: Overall success rate of the evaluation
     """
-    eval_data = load_eval_data()
-    results = []
-    for example in eval_data:
-        critique, rewrite = run_critique_rewrite_pipeline(
-            example["human_prompt"],
-            example["assistant_answer"],
-        )
-        results.append(
-            CritiqueRewriteExample(
-                human_prompt=example["human_prompt"],
-                assistant_answer=example["assistant_answer"],
-                critique=critique,
-                rewrite=rewrite,
-            )
-        )
+    # Create evals directory if it doesn't exist
+    eval_dir = Path("evals")
+    eval_dir.mkdir(exist_ok=True)
+
+    # Create filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = eval_dir / f"eval_report_{version}_{timestamp}.json"
+
+    # Prepare report data
+    report = EvaluationReport(
+        version=version,
+        timestamp=timestamp,
+        accuracy=success_rate,
+        results=results,
+    )
+
+    # Save to JSON file
+    with filename.open("w", encoding="utf-8") as f:
+        json.dump(dataclasses.asdict(report), f, indent=2)
+
+    return filename

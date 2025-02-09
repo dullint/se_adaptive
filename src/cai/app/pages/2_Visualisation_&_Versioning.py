@@ -33,7 +33,7 @@ with examples_container:
             assistant_answer=example.assistant_answer,
             critique=example.critique,
             rewrite=example.rewrite,
-            show_adherence=False,
+            show_adherence=True,
             on_delete=lambda: delete_example(i - 1, version),
         )
 

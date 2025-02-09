@@ -2,7 +2,7 @@ import streamlit as st
 
 
 def render_action_buttons(
-    rewrite: str, on_use_new=None, on_add_to_examples=None
+    rewrite: str, on_use_new=None, add_to_dev_examples=None
 ) -> None:
     """Renders the action buttons below rewritten response.
 
@@ -21,7 +21,7 @@ def render_action_buttons(
 
     with col2:
         if st.button("📚 Add to Dev Examples", use_container_width=True):
-            if on_add_to_examples:
-                on_add_to_examples()
+            if add_to_dev_examples:
+                add_to_dev_examples()
 
     st.markdown("</div>", unsafe_allow_html=True)

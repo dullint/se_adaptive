@@ -17,7 +17,7 @@ def render_prompt_input() -> tuple[str, str]:
     human_prompt = st.text_area(
         "Enter your prompt:",
         value=st.session_state.get("human_prompt", ""),
-        height=200,
+        height=100,
         placeholder="Type your prompt here...",
         label_visibility="collapsed",
         key="human_prompt_input",

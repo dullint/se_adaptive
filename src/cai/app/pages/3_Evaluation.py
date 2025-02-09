@@ -1,8 +1,14 @@
 import streamlit as st
-from cai.entities import CritiqueRewriteExample
-from cai.eval import load_eval_data, assert_principle, run_critique_rewrite_pipeline
+from cai.entities import EvaluationResult
+from cai.eval import (
+    load_eval_data,
+    assert_principle,
+    save_eval_report,
+)
+from cai.critique_rewrite import run_critique_rewrite_pipeline
 from cai.versioning import list_examples_versions
 from cai.app.components.example_display import render_example
+
 
 st.title("Evaluation")
 
@@ -25,29 +31,34 @@ st.markdown(f"Testing {len(eval_data)} examples from the eval set")
 if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
     # Show progress bar
     progress_bar = st.progress(0)
-    results = []
+    results: list[EvaluationResult] = []
 
     # Process each example
     for idx, example in enumerate(eval_data):
         # Run critique and rewrite
         with st.spinner("Running critique and rewrite..."):
             critique, rewrite = run_critique_rewrite_pipeline(
-                example["human_prompt"], example["assistant_answer"]
+                example.human_prompt, example.assistant_answer, version
             )
-            results.append(
-                CritiqueRewriteExample(
-                    human_prompt=example["human_prompt"],
-                    assistant_answer=example["assistant_answer"],
-                    critique=critique,
-                    rewrite=rewrite,
-                )
+            # Check adherence
+            adherence, first_letters = assert_principle(rewrite)
+
+            # Store result
+            result = EvaluationResult(
+                human_prompt=example.human_prompt,
+                assistant_answer=example.assistant_answer,
+                critique=critique,
+                rewrite=rewrite,
+                follows_principle=adherence,
+                first_letters=first_letters,
             )
+            results.append(result)
 
         # Display example using component
         render_example(
             index=idx + 1,
-            human_prompt=example["human_prompt"],
-            assistant_answer=example["assistant_answer"],
+            human_prompt=example.human_prompt,
+            assistant_answer=example.assistant_answer,
             critique=critique,
             rewrite=rewrite,
             show_adherence=True,
@@ -60,14 +71,16 @@ if st.button("🚀 Run Evaluation", type="primary", use_container_width=True):
     # Show final statistics
     st.markdown("---")
     st.subheader("📊 Evaluation Summary")
-    success_rate = sum(1 for ex in results if assert_principle(ex.rewrite)[0]) / len(
-        results
-    )
+    success_rate = sum(1 for r in results if r.follows_principle) / len(results)
     st.metric(
         "Success Rate",
         f"{success_rate:.1%}",
         help="Percentage of rewrites that follow the ADAPTIVE principle",
     )
+
+    # Save evaluation report
+    report_path = save_eval_report(results, version, success_rate)
+    st.success(f"Evaluation report saved to: {report_path}")
 
 else:
     st.info("Click the button above to start the evaluation process.")
